@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>UDlink</title>
+</head>
+<style>
+	@font-face {
+		font-family: 'JetBrains Mono';
+		font-style: normal;
+		font-weight: 200;
+		font-stretch: 100%;
+		src: url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-normal.woff2) format('woff2'), url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-normal.woff) format('woff');
+	}
+
+	html,
+	body {
+		float: left;
+		width: 100%;
+		height: 100vh;
+		margin: 0 auto;
+		padding: 0;
+		overflow: hidden;
+		font-family: 'JetBrains Mono', monospace;
+		color: #2be9ff;
+		background-image: linear-gradient(to top, transparent, transparent), linear-gradient(to bottom, #122654, #9976f3);
+		background-repeat: no-repeat;
+		background-size: 100% auto, 100% 100%;
+		background-attachment: fixed;
+		background-position: 0 100%, 0 0;
+	}
+
+	/* UDL.INK TITLE */
+	.page-title {
+		float: left;
+		width: 100%;
+		text-align: center;
+	}
+
+	h1 {
+		margin: 0;
+		padding: 0;
+		color: #07c2f8;
+		font-family: 'Arial';
+		font-size: 8em;
+		font-weight: 600;
+		text-shadow: 3px 3px 0 #07c2f8, -3px -3px 0 #07c2f8, -3px 3px 0 #07c2f8, 3px -3px 0 #07c2f8;
+	}
+
+	.border {
+		color: #1a2a5a;
+		text-shadow: -2px -2px 0 #07c2f8, -2px 2px 0 #07c2f8, 2px -2px 0 #07c2f8, 2px 2px 0 #07c2f8;
+	}
+
+	/* SEARCH BAR */
+	.link-container {
+		float: left;
+		width: 100%;
+		margin: 0;
+		text-align: center;
+	}
+
+	.link-center {
+		display: inline-block;
+		width: auto;
+		border: 2px solid #2be9ff;
+		border-radius: 20px;
+	}
+
+	.link-prefix {
+		float: left;
+		padding: 8px;
+		border-right: 2px solid #2be9ff;
+		border-radius: 20px 0 0 20px;
+		background: #122654;
+		font-size: 1.1em;
+	}
+
+	.link-input {
+		float: left;
+		font-family: 'JetBrains Mono', monospace;
+		color: #2be9ff;
+		background: #1a2a5a;
+		width: calc(400px - 80px);
+		padding: 8px;
+		font-size: 1.1em;
+		border: none;
+		outline: none;
+	}
+
+	.link-input::placeholder {
+		color: #2be9ff;
+	}
+
+	.link-copy {
+		float: left;
+		width: auto;
+		height: 40px;
+		background: #122654;
+		border: none;
+		padding: 8px;
+		cursor: pointer;
+		outline: none;
+		border-left: 2px solid #2be9ff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	svg {
+		fill: #2be9ff;
+	}
+
+	.link-copy svg {
+		width: 20px;
+		height: 15px;
+	}
+
+	.last-button {
+		border-radius: 0 20px 20px 0;
+	}
+
+	/* OPTIONS */
+	.collapsible-container {
+		float: left;
+		width: 100%;
+		margin: 10px 0 0 0;
+		text-align: center
+	}
+
+	.collapsible-text {
+		float: left;
+		width: 100%;
+		text-align: center;
+	}
+
+	.collapsible {
+		width: 100%;
+		padding: 10px;
+		background: none;
+		cursor: pointer;
+		border: none;
+		transition: .25s;
+	}
+
+	.collapsible svg {
+		height: 10px;
+	}
+
+	.collapsible.active {
+		transform: scaleY(-1);
+	}
+
+	/* OPTIONS DROPDOWN */
+	.carousel-wrapper {
+		float: left;
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		margin: 0;
+		text-align: center;
+	}
+
+	.carousel-center {
+		width: auto;
+		overflow: hidden;
+	}
+
+	.carousel {
+		width: 60%;
+		max-height: 0;
+		border-radius: 20px;
+		box-shadow: inset 0 3px 14px 3px #000;
+		overflow-x: auto;
+		white-space: nowrap;
+		transition: max-height .25s ease-in-out;
+		display: inline-flex;
+		justify-content: flex-start;
+		background: #1a2a5a;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.scroll-button {
+		position: absolute;
+		margin: 50px 0;
+		padding: 0;
+		border: none;
+		cursor: pointer;
+		z-index: 1;
+		background: rgba(0, 0, 0, 0);
+	}
+
+	.scroll-button svg {
+		fill: #000;
+		height: 20px;
+	}
+
+	.scroll-left {
+		left: 18%;
+	}
+
+	.scroll-right {
+		right: 18%;
+	}
+
+	.carousel-inner-wrapper {
+		display: flex;
+		padding: 0;
+	}
+
+	.option {
+		width: 100px;
+		height: 100px;
+		margin: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		border: none;
+	}
+
+	.option img {
+		width: 100px;
+		height: 50px;
+		object-fit: contain;
+	}
+
+	.option p {
+		margin: 10px;
+		font-size: 12px;
+	}
+
+	/* OPTIONS DESCRIPTION */
+	.options-container {
+		float: left;
+		width: 100%;
+		margin: 0;
+		text-align: center;
+	}
+
+	.options-center {
+		display: inline-block;
+		width: 35%;
+		margin: 0 0 0 2%;
+		line-height: 1.8em;
+		text-align: left;
+	}
+
+	/* SCROLLBAR */
+	::-webkit-scrollbar {
+		background: #000;
+	}
+
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 0 #fff;
+		border-radius: 0;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #222;
+		border-radius: 0;
+		-webkit-box-shadow: inset 0 0 0 #000;
+		font-size: 2em;
+		display: inline-block;
+		width: .2em;
+		height: .4em;
+		border: .05em solid #222;
+		position: relative;
+		border-radius: 0;
+		z-index: 1;
+	}
+
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: #222 #000;
+	}
+
+	/* HIGHLIGHT COLOR */
+	::selection {
+		background: #07c2f8;
+		color: #1a2a5a;
+	}
+
+	/* SCREEN SIZES */
+	@media only screen and (min-width: 1501px) and (max-width: 1919px) {
+		.options-center {
+			width: 40%;
+		}
+	}
+
+	@media only screen and (min-width: 769px) and (max-width: 1500px) {
+		.options-center {
+			width: 60%;
+		}
+
+		.carousel {
+			width: 70%;
+		}
+
+		.scroll-left {
+			left: 12%;
+		}
+
+		.scroll-right {
+			right: 12%;
+		}
+	}
+
+	@media only screen and (min-width: 601px) and (max-width: 768px) {
+		.options-center {
+			width: 82%;
+		}
+
+		.carousel {
+			width: 80%;
+		}
+
+		.scroll-left {
+			left: 3%;
+		}
+
+		.scroll-right {
+			right: 3%;
+		}
+	}
+
+	@media only screen and (min-width: 481px) and (max-width: 600px) {
+		h1 {
+			font-size: 7em;
+		}
+
+		.link-input {
+			width: 225px
+		}
+
+		.carousel {
+			width: 80%;
+		}
+
+		.scroll-left {
+			left: 3%;
+		}
+
+		.scroll-right {
+			right: 3%;
+		}
+
+		.options-center {
+			width: 92%;
+		}
+	}
+
+	@media only screen and (min-width: 100px) and (max-width: 480px) {
+		h1 {
+			font-size: 6em;
+		}
+
+		.link-input {
+			width: 175px
+		}
+
+		.carousel {
+			width: 80%;
+		}
+
+		.scroll-left {
+			left: 3%;
+		}
+
+		.scroll-right {
+			right: 3%;
+		}
+
+		.options-center {
+			width: 92%;
+		}
+	}
+</style>
+
+<body>
+	<div class="page-title">
+		<h1>UD<span class="border">L.INK</span></h1>
+	</div>
+	<div class="link-container">
+		<div class="link-center">
+			<div class="link-prefix" id="input-prefix">udl.ink/</div>
+			<input class="link-input" type="text" id="user-input">
+			<button class="link-copy" id="copy-button">
+				<svg id="copy-icon" viewBox="0 0 111.07 122.88">
+					<path
+						d="M97.67,20.81L97.67,20.81l0.01,0.02c3.7,0.01,7.04,1.51,9.46,3.93c2.4,2.41,3.9,5.74,3.9,9.42h0.02v0.02v75.28 v0.01h-0.02c-0.01,3.68-1.51,7.03-3.93,9.46c-2.41,2.4-5.74,3.9-9.42,3.9v0.02h-0.02H38.48h-0.01v-0.02 c-3.69-0.01-7.04-1.5-9.46-3.93c-2.4-2.41-3.9-5.74-3.91-9.42H25.1c0-25.96,0-49.34,0-75.3v-0.01h0.02 c0.01-3.69,1.52-7.04,3.94-9.46c2.41-2.4,5.73-3.9,9.42-3.91v-0.02h0.02C58.22,20.81,77.95,20.81,97.67,20.81L97.67,20.81z M0.02,75.38L0,13.39v-0.01h0.02c0.01-3.69,1.52-7.04,3.93-9.46c2.41-2.4,5.74-3.9,9.42-3.91V0h0.02h59.19 c7.69,0,8.9,9.96,0.01,10.16H13.4h-0.02v-0.02c-0.88,0-1.68,0.37-2.27,0.97c-0.59,0.58-0.96,1.4-0.96,2.27h0.02v0.01v3.17 c0,19.61,0,39.21,0,58.81C10.17,83.63,0.02,84.09,0.02,75.38L0.02,75.38z M100.91,109.49V34.2v-0.02h0.02 c0-0.87-0.37-1.68-0.97-2.27c-0.59-0.58-1.4-0.96-2.28-0.96v0.02h-0.01H38.48h-0.02v-0.02c-0.88,0-1.68,0.38-2.27,0.97 c-0.59,0.58-0.96,1.4-0.96,2.27h0.02v0.01v75.28v0.02h-0.02c0,0.88,0.38,1.68,0.97,2.27c0.59,0.59,1.4,0.96,2.27,0.96v-0.02h0.01 h59.19h0.02v0.02c0.87,0,1.68-0.38,2.27-0.97c0.59-0.58,0.96-1.4,0.96-2.27L100.91,109.49L100.91,109.49L100.91,109.49 L100.91,109.49z" />
+				</svg>
+			</button>
+			<button class="link-copy last-button" id="go-now">
+				<svg id="go-icon" viewBox="0 0 122.879 119.799">
+					<path
+						d="M49.988,0h0.016v0.007C63.803,0.011,76.298,5.608,85.34,14.652c9.027,9.031,14.619,21.515,14.628,35.303h0.007v0.033v0.04 h-0.007c-0.005,5.557-0.917,10.905-2.594,15.892c-0.281,0.837-0.575,1.641-0.877,2.409v0.007c-1.446,3.66-3.315,7.12-5.547,10.307 l29.082,26.139l0.018,0.016l0.157,0.146l0.011,0.011c1.642,1.563,2.536,3.656,2.649,5.78c0.11,2.1-0.543,4.248-1.979,5.971 l-0.011,0.016l-0.175,0.203l-0.035,0.035l-0.146,0.16l-0.016,0.021c-1.565,1.642-3.654,2.534-5.78,2.646 c-2.097,0.111-4.247-0.54-5.971-1.978l-0.015-0.011l-0.204-0.175l-0.029-0.024L78.761,90.865c-0.88,0.62-1.778,1.209-2.687,1.765 c-1.233,0.755-2.51,1.466-3.813,2.115c-6.699,3.342-14.269,5.222-22.272,5.222v0.007h-0.016v-0.007 c-13.799-0.004-26.296-5.601-35.338-14.645C5.605,76.291,0.016,63.805,0.007,50.021H0v-0.033v-0.016h0.007 c0.004-13.799,5.601-26.296,14.645-35.338C23.683,5.608,36.167,0.016,49.955,0.007V0H49.988L49.988,0z M50.004,11.21v0.007h-0.016 h-0.033V11.21c-10.686,0.007-20.372,4.35-27.384,11.359C15.56,29.578,11.213,39.274,11.21,49.973h0.007v0.016v0.033H11.21 c0.007,10.686,4.347,20.367,11.359,27.381c7.009,7.012,16.705,11.359,27.403,11.361v-0.007h0.016h0.033v0.007 c10.686-0.007,20.368-4.348,27.382-11.359c7.011-7.009,11.358-16.702,11.36-27.4h-0.006v-0.016v-0.033h0.006 c-0.006-10.686-4.35-20.372-11.358-27.384C70.396,15.56,60.703,11.213,50.004,11.21L50.004,11.21z" />
+				</svg>
+			</button>
+		</div>
+	</div>
+	<div class="collapsible-container">
+		<div class="collapsible-text">Options</div>
+		<button class="collapsible">
+			<svg viewBox="0 0 512 298.04">
+				<path
+					d="M12.08 70.78c-16.17-16.24-16.09-42.54.15-58.7 16.25-16.17 42.54-16.09 58.71.15L256 197.76 441.06 12.23c16.17-16.24 42.46-16.32 58.71-.15 16.24 16.16 16.32 42.46.15 58.7L285.27 285.96c-16.24 16.17-42.54 16.09-58.7-.15L12.08 70.78z" />
+			</svg>
+		</button>
+		<div class="carousel-wrapper">
+			<div class="carousel-center">
+				<button class="scroll-button scroll-left">
+					<svg viewBox="0 0 298 511.93">
+						<path
+							d="M285.77 441c16.24 16.17 16.32 42.46.15 58.7-16.16 16.24-42.45 16.32-58.69.16l-215-214.47c-16.24-16.16-16.32-42.45-.15-58.69L227.23 12.08c16.24-16.17 42.53-16.09 58.69.15 16.17 16.24 16.09 42.54-.15 58.7l-185.5 185.04L285.77 441z" />
+					</svg>
+				</button>
+				<div class="carousel">
+					<div class="carousel-inner-wrapper">
+						<div class="option" data-prefix="udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Default">
+							<p>Default</p>
+						</div>
+						<div class="option" data-prefix="cf.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Cloudflare">
+							<p>Cloudflare</p>
+						</div>
+						<div class="option" data-prefix="me.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="UD.me Page">
+							<p>UD.me Page</p>
+						</div>
+						<div class="option" data-prefix="scan.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Block Explorer">
+							<p>Block Explorer</p>
+						</div>
+						<div class="option" data-prefix="os.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="OpenSea">
+							<p>OpenSea</p>
+						</div>
+						<div class="option" data-prefix="dweb.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Dweb (ipfs.io)">
+							<p>Dweb (ipfs.io)</p>
+						</div>
+						<div class="option" data-prefix="gwc.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Gateway.cloud">
+							<p>Gateway.cloud</p>
+						</div>
+						<div class="option" data-prefix="nfts.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="NFTstorage">
+							<p>NFTstorage</p>
+						</div>
+						<div class="option" data-prefix="w3s.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="Web3storage">
+							<p>Web3storage</p>
+						</div>
+						<div class="option" data-prefix="4el.udl.ink/">
+							<img src="https://via.placeholder.com/100" alt="4everland.io">
+							<p>4everland.io</p>
+						</div>
+						<!-- Add more options as needed -->
+					</div>
+				</div>
+				<button class="scroll-button scroll-right">
+					<svg viewBox="0 0 298 511.93">
+						<path
+							d="M70.77 499.85c-16.24 16.17-42.53 16.09-58.69-.15-16.17-16.25-16.09-42.54.15-58.7l185.5-185.03L12.23 70.93c-16.24-16.16-16.32-42.45-.15-58.7 16.16-16.24 42.45-16.32 58.69-.15l215.15 214.61c16.17 16.25 16.09 42.54-.15 58.7l-215 214.46z" />
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="options-container">
+		<div class="options-center">
+			<p>Use the default gateway (checked and updated if the current default gateway stops working in the future),
+				select a specific gateway, or use one of the extra features like Opensea or Block Explorer linking</p>
+		</div>
+	</div>
+	<script>
+		const prefix = document.getElementById("input-prefix");
+		const userInput = document.getElementById("user-input");
+		const exampleTexts = [
+			"8bitsquid.x",
+			"3blocks.x",
+			"kooheji.crypto",
+			"charlielowndes.nft",
+			"bro.nft",
+			"virtualjester.x",
+			"sandy.nft",
+			"0xcryptopapi.x",
+		];
+		const carousel = document.querySelector(".carousel");
+		const scrollLeftButton = document.querySelector(".scroll-left");
+		const scrollRightButton = document.querySelector(".scroll-right");
+		let currentIndex = 0;
+		let typing = true;
+		let typingIndex = 0;
+		let userInputClear = true;
+		let flashCount = 0;
+		scrollLeftButton.addEventListener("click", () => {
+			carousel.scrollBy({
+				left: -window.innerWidth * 0.5, // Scroll 50% of the screen width to the left
+				behavior: 'smooth' // Use smooth scrolling
+			});
+		});
+		scrollRightButton.addEventListener("click", () => {
+			carousel.scrollBy({
+				left: window.innerWidth * 0.5, // Scroll 50% of the screen width to the right
+				behavior: 'smooth' // Use smooth scrolling
+			});
+		});
+		function animateGhostText() {
+			if (userInput.value === "") {
+				if (typing) {
+					userInput.placeholder = exampleTexts[currentIndex].substring(0, typingIndex++) + "|";
+					if (typingIndex > exampleTexts[currentIndex].length) {
+						typing = false;
+						setTimeout(() => { if (userInputClear) animateGhostText() }, 200);
+					} else {
+						setTimeout(() => { if (userInputClear) animateGhostText() }, 200);
+					}
+				} else {
+					if (flashCount < 5) {
+						userInput.placeholder = exampleTexts[currentIndex].substring(0, typingIndex) + ((flashCount % 2) ? "" : "|");
+						flashCount++;
+						setTimeout(() => { if (userInputClear) animateGhostText() }, 500);
+						return;
+					}
+					userInput.placeholder = exampleTexts[currentIndex].substring(0, typingIndex--) + "|";
+					if (typingIndex === 0) {
+						typing = true;
+						flashCount = 0;
+						currentIndex = (currentIndex + 1) % exampleTexts.length;
+						setTimeout(() => { if (userInputClear) animateGhostText() }, 200);
+					} else {
+						setTimeout(() => { if (userInputClear) animateGhostText() }, 100);
+					}
+				}
+			} else {
+				userInput.placeholder = "";
+			}
+		}
+		userInput.addEventListener("input", () => {
+			if (userInput.value === "") {
+				typingIndex = 0;
+				typing = true;
+				flashCount = 0;
+				userInputClear = true;
+				animateGhostText();
+			} else {
+				userInput.placeholder = "";
+				userInputClear = false;
+			}
+		});
+		animateGhostText();
+		document.querySelector(".collapsible").addEventListener("click", function () {
+			this.classList.toggle("active");
+			carousel.style.maxHeight = carousel.style.maxHeight ? null : carousel.scrollHeight + "px";
+		});
+		Array.from(document.getElementsByClassName("option")).forEach(option => {
+			option.addEventListener("click", () => {
+				prefix.textContent = option.getAttribute("data-prefix");
+			});
+		});
+		async function copyToClipboard(text) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch (err) {
+				console.error("Failed to copy text: ", err);
+				return false;
+			}
+		}
+		const inputButton = document.getElementById("copy-button");
+		const copyIcon = inputButton.innerHTML;
+		const copiedIcon = document.getElementById("copied-tick").cloneNode(true);
+		copiedIcon.style.display = "";
+		inputButton.addEventListener("click", async () => {
+			if (userInput.value !== "") {
+				if (await copyToClipboard(`${prefix.textContent}${userInput.value}`)) {
+					// Change button content to a checkmark
+					inputButton.innerHTML = copiedIcon.outerHTML;
+					// Revert button content back after 1 second
+					setTimeout(() => {
+						inputButton.innerHTML = copyIcon;
+					}, 1000);
+				} else {
+					alert(`Your browser does not support copying to clipboard, please copy the link below manually:\nhttps://${prefix.textContent}${userInput.value}`);
+				}
+			} else {
+				alert("Please enter an Unstoppable Domain to link to");
+			}
+		});
+		document.getElementById("go-now").addEventListener("click", () => {
+			if (userInput.value !== "") {
+				window.open(`https://${prefix.textContent}${userInput.value}`, "_blank");
+			} else {
+				alert("Please enter an Unstoppable Domain to link to");
+			}
+		});
+	</script>
+</body>
+
+</html>
