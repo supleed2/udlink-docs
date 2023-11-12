@@ -1,0 +1,289 @@
+/* latin */
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: italic;
+	font-weight: 200;
+	font-stretch: 100%;
+	src: url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-italic.woff2) format('woff2'), url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-italic.woff) format('woff');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: normal;
+	font-weight: 200;
+	font-stretch: 100%;
+	src: url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-normal.woff2) format('woff2'), url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-200-normal.woff) format('woff');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: italic;
+	font-weight: 200;
+	font-stretch: 100%;
+	src: url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-ext-200-italic.woff2) format('woff2'), url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-ext-200-italic.woff) format('woff');
+	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-style: normal;
+	font-weight: 200;
+	font-stretch: 100%;
+	src: url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-ext-200-normal.woff2) format('woff2'), url(https://fonts.bunny.net/jetbrains-mono/files/jetbrains-mono-latin-ext-200-normal.woff) format('woff');
+	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+	--bg-colour: #122654;
+	--accent-colour: #2be9ff;
+	--accent-colour-2: #9976f3;
+	--input-box-bg-colour: #1a2a5a;
+	--input-box-bg-colour-2: #122654;
+	--input-box-border-thickness: 2px;
+	--input-box-border-colour: #2be9ff;
+	--input-box-border: var(--input-box-border-thickness) solid var(--input-box-border-colour);
+	--input-box-text-colour: #2be9ff;
+	--input-box-placeholder-colour: #2be9ff;
+	--input-box-button-colour: #2be9ff;
+	--input-box-border-radius: 20px;
+	--input-buttons-bg-colour: #122654;
+	--collapsible-expand-time: 0.25s;
+	--collapsible-bg-colour: #1a2a5a;
+}
+
+html {
+	--input-prefix-width: 80px;
+}
+
+body {
+	font-family: 'JetBrains Mono', monospace;
+	margin: 0;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	background-image: linear-gradient(to top, transparent, transparent), linear-gradient(to bottom, var(--bg-colour), var(--accent-colour-2));
+	background-repeat: no-repeat;
+	background-size: 100% auto, 100% 100%;
+	background-attachment: fixed;
+	background-position: 0 100%, 0 0;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+.banner-image {
+	display: flex;
+	justify-content: center;
+	min-height: 150px;
+	margin: 20px 10%;
+}
+
+.banner-image img {
+	max-height: 150px;
+	max-width: 80%;
+}
+
+.input-container {
+	display: flex;
+	border: var(--input-box-border);
+	border-radius: var(--input-box-border-radius);
+	margin-bottom: 10px;
+}
+
+.input-prefix {
+	background-color: var(--input-box-bg-colour-2);
+	color: var(--accent-colour);
+	padding: 8px;
+	font-size: 16px;
+	border-right: var(--input-box-border);
+	display: flex;
+	align-items: center;
+	width: var(--input-prefix-width);
+	border-radius: var(--input-box-border-radius) 0 0 var(--input-box-border-radius);
+	justify-content: flex-end;
+}
+
+.user-input {
+	font-family: 'JetBrains Mono', monospace;
+	background-color: var(--input-box-bg-colour);
+	color: var(--accent-colour);
+	width: calc(300px - var(--input-prefix-width));
+	/* TODO: make dynamic */
+	padding: 8px;
+	font-size: 16px;
+	border: none;
+	outline: none;
+}
+
+.user-input::placeholder {
+	color: var(--accent-colour);
+}
+
+.input-button {
+	background-color: var(--input-buttons-bg-colour);
+	border: none;
+	padding: 8px;
+	cursor: pointer;
+	outline: none;
+	border-left: var(--input-box-border);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.last-button {
+	border-radius: 0 var(--input-box-border-radius) var(--input-box-border-radius) 0;
+}
+
+.input-button svg {
+	fill: var(--accent-colour);
+	width: 20px;
+	height: 15px;
+}
+
+.collapsible-container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.collapsible {
+	background-color: transparent;
+	cursor: pointer;
+	padding: 10px;
+	border: none;
+	transition: var(--collapsible-expand-time);
+}
+
+.collapsible-text {
+	color: var(--accent-colour);
+}
+
+.collapsible svg {
+	height: 10px;
+	fill: var(--accent-colour);
+}
+
+.collapsible.active {
+	transform: scaleY(-1);
+}
+
+.carousel-wrapper {
+	position: relative;
+	width: 100%;
+	overflow-y: hidden;
+	display: inline-flex;
+	align-items: center;
+	pointer-events: none;
+}
+
+.carousel {
+	max-height: 0;
+	width: 100%;
+	overflow-x: scroll;
+	white-space: nowrap;
+	transition: max-height var(--collapsible-expand-time) ease-in-out;
+	display: inline-flex;
+	justify-content: flex-start;
+	background-color: var(--collapsible-bg-colour);
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	pointer-events: auto;
+}
+
+.carousel::-webkit-scrollbar {
+	display: none;
+}
+
+.carousel:after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-shadow: inset 0px 20px 15px -15px #000, inset 0px -15px 15px -15px #000;
+	pointer-events: none;
+}
+
+.scroll-button {
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	z-index: 1;
+	background-color: transparent;
+	position: absolute;
+}
+
+.scroll-button svg {
+	fill: var(--accent-colour);
+	height: 20px;
+}
+
+.scroll-left {
+	margin-left: 60px;
+	left: 0px;
+	pointer-events: auto;
+}
+
+.scroll-right {
+	margin-right: 60px;
+	right: 0px;
+	pointer-events: auto;
+}
+
+.carousel-inner-wrapper {
+	display: flex;
+	padding: 0px calc(50% - 60px);
+	scroll-snap-type: y mandatory;
+}
+
+.carousel-inner-wrapper>div {
+	scroll-snap-align: center;
+}
+
+.option {
+	width: 100px;
+	height: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 10px;
+	cursor: pointer;
+	border: none;
+}
+
+.option img {
+	width: 100px;
+	height: 50px;
+	object-fit: contain;
+}
+
+.option p {
+	margin: 10px;
+	font-size: 12px;
+	color: var(--accent-colour);
+}
+
+.options-description {
+	display: flex;
+	max-width: 800px;
+	color: var(--accent-colour);
+	flex-direction: column;
+	justify-content: flex-start;
+	margin: 0px 10%;
+}
+
+/* TODO: @media (width < 600px) { stuff to change format of input box } */
