@@ -58,6 +58,8 @@
 
 html {
 	--input-prefix-width: 80px;
+	overflow-y: hidden;
+	overflow-y: scroll;
 }
 
 body {
