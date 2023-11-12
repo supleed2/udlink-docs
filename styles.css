@@ -39,6 +39,7 @@
 }
 
 :root {
+	color-scheme: only dark;
 	--bg-colour: #122654;
 	--accent-colour: #2be9ff;
 	--accent-colour-2: #9976f3;
