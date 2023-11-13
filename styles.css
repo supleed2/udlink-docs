@@ -304,6 +304,16 @@ a>picture {
 	width: calc(min(240px, 80%));
 }
 
+.social-icons {
+	display: flex;
+	gap: 20px;
+}
+
+.social-icon svg {
+	width: min(15vw, 40px);
+	fill: var(--accent-colour);
+}
+
 @media screen and (width < 450px) {
 	.scroll-button {
 		display: none;
