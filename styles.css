@@ -294,6 +294,16 @@ body::-webkit-scrollbar {
 	margin: 0px 10%;
 }
 
+a>picture {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
+#badge-button {
+	width: calc(min(240px, 80%));
+}
+
 @media screen and (width < 450px) {
 	.scroll-button {
 		display: none;
