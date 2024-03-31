@@ -131,3 +131,9 @@ document.getElementById("go-now").addEventListener("click", () => {
 		alert("Please enter an Unstoppable Domain to go to");
 	}
 });
+
+document.addEventListener("DOMContentLoaded", (e) => {
+	const counter = document.getElementById("request-count");
+	fetch("/requestcount").then(r => r.text())
+		.then(r => counter.textContent = Number(r.trim()).toLocaleString());
+});
