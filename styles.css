@@ -294,10 +294,13 @@ body::-webkit-scrollbar {
 	margin: 0px 10%;
 }
 
-a>picture {
+.alchemy-badge {
 	display: flex;
-	width: 100%;
 	justify-content: center;
+}
+
+.alchemy-badge>img {
+	cursor: pointer;
 }
 
 #badge-button {
